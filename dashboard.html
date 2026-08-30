@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpenseTrack - Protected Dashboard</title>
+    <meta name="description" content="Manage and track your daily expenses with ExpenseTrack.">
+    <!-- Favicon (SVG = crisp at any size, PNG fallback) -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- SheetJS for real .xlsx Excel export -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <!-- Chart.js for interactive graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-brand">
+                <div class="logo-icon">₹</div>
+                <div>
+                    <h1>ExpenseTrack</h1>
+                    <p class="subtitle">Track your money. Control your spending.</p>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <!-- Account Button and Dropdown -->
+                <div class="account-dropdown-container">
+                    <button id="account-dropdown-btn" class="account-btn" aria-expanded="false" aria-label="User Account Menu">
+                        <div class="user-avatar" id="user-avatar-initial">U</div>
+                        <span class="user-name-text" id="user-name-display">User Name</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+
+                    <div id="account-dropdown-menu" class="account-dropdown-menu hidden">
+                        <div class="dropdown-header-info">
+                            <div class="user-avatar-large" id="dropdown-avatar-initial">U</div>
+                            <div class="dropdown-user-text">
+                                <strong id="dropdown-user-name">User Name</strong>
+                                <span id="dropdown-user-email" class="text-muted">user@example.com</span>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="settings.html#section-profile" class="dropdown-item">👤 My Profile</a>
+                        <a href="settings.html" class="dropdown-item">⚙️ Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <button id="dropdown-logout-btn" class="dropdown-item dropdown-logout-item">🚪 Logout</button>
+                    </div>
+                </div>
+            <br>
+                <span id="current-date" class="current-date"></span>
+                
+                <button id="theme-toggle" class="btn btn-secondary btn-icon" title="Toggle Theme" aria-label="Toggle theme">
+                    <span id="theme-icon">🌙</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Summary Dashboard -->
+        <section class="dashboard-section" aria-label="Dashboard Overview">
+            <div class="dashboard-grid">
+                <div class="card summary-card card-total">
+                    <div class="card-icon">💰</div>
+                    <div class="card-info">
+                        <span class="card-label">Total Expenses</span>
+                        <h2 id="total-expenses-val" class="card-value">₹0</h2>
+                    </div>
+                </div>
+                <div class="card summary-card card-today">
+                    <div class="card-icon">📅</div>
+                    <div class="card-info">
+                        <span class="card-label">Today's Expense</span>
+                        <h2 id="today-expense-val" class="card-value">₹0</h2>
+                    </div>
+                </div>
+                <div class="card summary-card card-month">
+                    <div class="card-icon">📊</div>
+                    <div class="card-info">
+                        <span class="card-label">This Month</span>
+                        <h2 id="month-expense-val" class="card-value">₹0</h2>
+                    </div>
+                </div>
+                <div class="card summary-card card-count">
+                    <div class="card-icon">🧾</div>
+                    <div class="card-info">
+                        <span class="card-label">Number of Expenses</span>
+                        <h2 id="count-expenses-val" class="card-value">0</h2>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Layout: Form & Budget / Analytics -->
+        <div class="main-layout">
+            <!-- Left Column: Form & Budget -->
+            <div class="layout-column side-column">
+                <!-- Add/Edit Expense Form -->
+                <section class="card form-card">
+                    <div class="card-header">
+                        <h3 id="form-title">Add New Expense</h3>
+                    </div>
+                    <form id="expense-form" novalidate>
+                        <input type="hidden" id="expense-id">
+                        
+                        <div class="form-group">
+                            <label for="amount">Amount (₹) <span class="required">*</span></label>
+                            <input type="number" id="amount" placeholder="e.g. 250" step="0.01" min="0.01" required>
+                            <div class="error-msg" id="amount-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="category">Category <span class="required">*</span></label>
+                            <select id="category" required>
+                                <option value="">Select Category</option>
+                                <option value="Food">Food 🍔</option>
+                                <option value="Transport">Transport 🚌</option>
+                                <option value="Shopping">Shopping 🛍️</option>
+                                <option value="Bills">Bills 💡</option>
+                                <option value="Education">Education 📚</option>
+                                <option value="Entertainment">Entertainment 🎬</option>
+                                <option value="Health">Health 🏥</option>
+                                <option value="Travel">Travel ✈️</option>
+                                <option value="Other">Other 📦</option>
+                            </select>
+                            <div class="error-msg" id="category-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date">Date <span class="required">*</span></label>
+                            <input type="date" id="date" required>
+                            <div class="error-msg" id="date-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="payment-method">Payment Method <span class="required">*</span></label>
+                            <select id="payment-method" required>
+                                <option value="Cash">Cash 💵</option>
+                                <option value="UPI" selected>UPI 📱</option>
+                                <option value="Debit Card">Debit Card 💳</option>
+                                <option value="Credit Card">Credit Card 💳</option>
+                                <option value="Bank Transfer">Bank Transfer 🏦</option>
+                                <option value="Other">Other 💸</option>
+                            </select>
+                            <div class="error-msg" id="payment-error"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <input type="text" id="description" placeholder="e.g. Lunch with friends">
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" id="submit-btn" class="btn btn-primary btn-full">
+                                <span>➕</span> <span id="submit-btn-text">Add Expense</span>
+                            </button>
+                            <button type="button" id="cancel-edit-btn" class="btn btn-secondary btn-full hidden">
+                                Cancel Edit
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Monthly Budget Card -->
+                <section class="card budget-card">
+                    <div class="card-header">
+                        <h3>Monthly Budget</h3>
+                        <button id="set-budget-btn" class="btn btn-sm btn-outline">Set Budget</button>
+                    </div>
+                    <div class="budget-details">
+                        <div class="budget-stat">
+                            <span>Budget:</span>
+                            <strong id="budget-amount-display">₹0</strong>
+                        </div>
+                        <div class="budget-stat">
+                            <span>Spent:</span>
+                            <span id="budget-spent-display">₹0</span>
+                        </div>
+                        <div class="budget-stat">
+                            <span>Remaining:</span>
+                            <strong id="budget-remaining-display">₹0</strong>
+                        </div>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div id="budget-progress-bar" class="progress-bar" style="width: 0%;"></div>
+                    </div>
+                    <div id="budget-warning" class="budget-warning hidden">
+                        ⚠️ You have exceeded your monthly budget!
+                    </div>
+
+                    <!-- Budget Form -->
+                    <div id="budget-form-container" class="budget-form-container hidden">
+                        <form id="budget-form">
+                            <div class="form-group">
+                                <label for="budget-input">Set New Monthly Budget (₹)</label>
+                                <div class="inline-input-btn">
+                                    <input type="number" id="budget-input" min="0" step="100" placeholder="e.g. 10000" required>
+                                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                                    <button type="button" id="cancel-budget-btn" class="btn btn-secondary btn-sm">Cancel</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column: Expense List & Category Summary -->
+            <div class="layout-column main-column">
+                <!-- Search & Filters -->
+                <section class="card filter-card">
+                    <div class="filter-grid">
+                        <div class="search-box">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="search-input" placeholder="Search expenses by description, category, payment...">
+                        </div>
+                        <div class="filter-group">
+                            <label for="category-filter">Category:</label>
+                            <select id="category-filter">
+                                <option value="All">All Categories</option>
+                                <option value="Food">Food</option>
+                                <option value="Transport">Transport</option>
+                                <option value="Shopping">Shopping</option>
+                                <option value="Bills">Bills</option>
+                                <option value="Education">Education</option>
+                                <option value="Entertainment">Entertainment</option>
+                                <option value="Health">Health</option>
+                                <option value="Travel">Travel</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="date-filter">Date Range:</label>
+                            <select id="date-filter">
+                                <option value="All">All Time</option>
+                                <option value="Today">Today</option>
+                                <option value="This Week">This Week</option>
+                                <option value="This Month">This Month</option>
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Expense List Section -->
+                <section class="card expense-list-card">
+                    <div class="card-header list-header">
+                        <h3>Recent Expenses</h3>
+                        <div class="list-actions">
+                            <button id="load-demo-btn" class="btn btn-sm btn-secondary">⚡ Load Demo Data</button>
+                            <button id="export-csv-btn" class="btn btn-sm btn-outline">📥 Export CSV</button>
+                            <button id="export-excel-btn" class="btn btn-sm btn-outline" style="border-color: var(--success); color: var(--success);">📊 Export Excel</button>
+                        </div>
+                    </div>
+
+                    <!-- Expenses Table -->
+                    <div class="table-wrapper">
+                        <table class="expense-table" id="expense-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Payment</th>
+                                    <th>Amount</th>
+                                    <th class="text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expense-list-tbody">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="empty-state" class="empty-state hidden">
+                        <div class="empty-icon">💰</div>
+                        <h4>No expenses yet</h4>
+                        <p>Start adding your daily expenses to understand where your money goes.</p>
+                        <button id="add-first-btn" class="btn btn-primary mt-3">Add Your First Expense</button>
+                    </div>
+                </section>
+
+                <!-- Category Spending Summary -->
+                <section class="card summary-breakdown-card">
+                    <div class="card-header">
+                        <h3>Spending Summary by Category</h3>
+                    </div>
+                    <div id="category-summary-container" class="category-summary-grid">
+                        <!-- Dynamic bars -->
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Analytics Charts Section -->
+        <section class="analytics-section" id="analytics-section">
+            <div class="analytics-grid">
+                <!-- Spending Over Time (Line Chart) -->
+                <div class="card chart-card chart-card-line">
+                    <div class="card-header chart-card-header">
+                        <div>
+                            <h3>📈 Spending Trend</h3>
+                            <p class="subtitle" style="margin-top: 2px;">Track how your spending changes day by day.</p>
+                        </div>
+                        <div class="chart-range-filters" id="chart-range-filters"></div>
+                    </div>
+                    <div class="chart-container" id="spending-chart-container">
+                        <canvas id="spending-chart"></canvas>
+                    </div>
+                    <div class="chart-empty-state hidden" id="chart-empty-state">
+                        <div class="empty-icon">📊</div>
+                        <h4>No spending data yet</h4>
+                        <p>Add your first expense to see your spending trend.</p>
+                    </div>
+                </div>
+
+                <!-- Category Doughnut Chart -->
+                <div class="card chart-card chart-card-doughnut">
+                    <div class="card-header">
+                        <h3>💰 Where Did My Money Go?</h3>
+                    </div>
+                    <div class="chart-container chart-container-doughnut" id="category-chart-container">
+                        <canvas id="category-chart"></canvas>
+                    </div>
+                    <div id="top-category-callout" class="top-category-callout"></div>
+                    <div id="category-expenses-list" class="category-expenses-list hidden"></div>
+                </div>
+            </div>
+
+            <!-- Insights Dashboard Cards -->
+            <div class="insights-grid" style="margin-top: 20px;">
+                <div class="card insight-card">
+                    <div class="insight-icon">🔥</div>
+                    <div class="insight-info">
+                        <span class="insight-label">Highest Spending Category</span>
+                        <h4 id="highest-cat-val" class="insight-value">None</h4>
+                    </div>
+                </div>
+                <div class="card insight-card">
+                    <div class="insight-icon">📅</div>
+                    <div class="insight-info">
+                        <span class="insight-label">Highest Spending Day</span>
+                        <h4 id="highest-day-val" class="insight-value">N/A</h4>
+                    </div>
+                </div>
+                <div class="card insight-card">
+                    <div class="insight-icon">📉</div>
+                    <div class="insight-info">
+                        <span class="insight-label">Lowest Spending Day</span>
+                        <h4 id="lowest-day-val" class="insight-value">N/A</h4>
+                    </div>
+                </div>
+                <div class="card insight-card">
+                    <div class="insight-icon">📊</div>
+                    <div class="insight-info">
+                        <span class="insight-label">Average Daily Spending</span>
+                        <h4 id="avg-daily-val" class="insight-value">₹0</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Graph Point Detail/Edit Popup -->
+        <div id="graph-popup-overlay" class="graph-popup-overlay hidden"></div>
+        <div id="graph-popup" class="graph-popup hidden"></div>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p>&copy; ExpenseTrack - Control Your Daily Spending.</p>
+                <div class="footer-actions">
+                    <button id="clear-all-btn" class="btn btn-danger-outline btn-sm">🗑️ Clear All My Data</button>
+                </div>
+            </div>
+            <div class="security-note" style="margin-top: 10px;">
+                💡 <strong>Security Note:</strong> This application uses browser LocalStorage for demonstration purposes. Do not store sensitive real-world banking passwords.
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/charts.js"></script>
+</body>
+</html>

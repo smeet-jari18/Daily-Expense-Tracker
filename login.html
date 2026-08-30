@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ExpenseTrack</title>
+    <meta name="description" content="Login to ExpenseTrack to track your money and control your spending.">
+    <!-- Favicon (SVG = crisp at any size, PNG fallback) -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <!-- Header -->
+            <div class="auth-header">
+                <div class="auth-brand">
+                    <div class="auth-logo">₹</div>
+                    <h1 class="auth-title">ExpenseTrack</h1>
+                </div>
+                <p class="auth-subtitle">Track your money. Control your spending.</p>
+            </div>
+
+            <!-- Notification Alert -->
+            <div id="alert-msg" class="alert alert-danger hidden"></div>
+
+            <!-- Login Form -->
+            <form id="login-form" novalidate>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="e.g. user@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="password-field-wrapper">
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                        <button type="button" class="password-toggle-btn" data-target="password" title="Show Password">👁️</button>
+                    </div>
+                </div>
+
+                <div class="forgot-link-wrapper">
+                    <a href="forgot-password.html" class="auth-link">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">Login</button>
+            </form>
+
+            <div class="auth-divider">
+                <span>OR</span>
+            </div>
+
+            <!-- Get Started Section -->
+            <div class="demo-section">
+                <div class="demo-title">🚀 First time here?</div>
+                <p class="demo-desc">Create a free account in seconds. On the dashboard you can use "Load sample data" to explore ExpenseTrack instantly.</p>
+                <a href="signup.html" class="btn btn-outline btn-full" style="text-decoration: none; text-align: center;">Create Free Account</a>
+            </div>
+
+            <!-- Footer Navigation Link -->
+            <div class="auth-footer-text">
+                Don't have an account? <a href="signup.html" class="auth-link">Sign Up</a>
+            </div>
+
+            <!-- Security Disclaimer -->
+            <div class="security-note">
+                🔒 <strong>Secure &amp; Persistent:</strong> Your account, expenses and settings are stored in a Supabase cloud database — they survive refreshes and work on any device with your login.
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>

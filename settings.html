@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpenseTrack - Settings</title>
+    <meta name="description" content="Manage your account, preferences and personal ExpenseTrack settings.">
+    <!-- Favicon (SVG = crisp at any size, PNG fallback) -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-brand">
+                <div class="logo-icon" id="header-logo-icon">₹</div>
+                <div>
+                    <h1>ExpenseTrack</h1>
+                    <p class="subtitle">Control your daily spending.</p>
+                </div>
+            </div>
+            
+            <div class="header-actions">
+                <!-- Account Dropdown Button and Menu -->
+                <div class="account-dropdown-container">
+                    <button id="account-dropdown-btn" class="account-btn" aria-expanded="false" aria-label="User Account Menu">
+                        <div class="user-avatar" id="user-avatar-initial">U</div>
+                        <span class="user-name-text" id="user-name-display">User Name</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </button>
+
+                    <div id="account-dropdown-menu" class="account-dropdown-menu hidden">
+                        <div class="dropdown-header-info">
+                            <div class="user-avatar-large" id="dropdown-avatar-initial">U</div>
+                            <div class="dropdown-user-text">
+                                <strong id="dropdown-user-name">User Name</strong>
+                                <span id="dropdown-user-email" class="text-muted">user@example.com</span>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <a href="settings.html#section-profile" class="dropdown-item">👤 My Profile</a>
+                        <a href="settings.html" class="dropdown-item">⚙️ Settings</a>
+                        <div class="dropdown-divider"></div>
+                        <button id="dropdown-logout-btn" class="dropdown-item dropdown-logout-item">🚪 Logout</button>
+                    </div>
+                </div>
+
+                <a href="dashboard.html" class="btn btn-secondary btn-sm">⬅️ Back to Dashboard</a>
+            </div>
+        </header>
+
+        <!-- Settings Layout -->
+        <div class="settings-layout">
+            <aside class="settings-sidebar">
+                <h3 class="sidebar-title">⚙️ Settings</h3>
+                <nav class="settings-nav">
+                    <a href="#section-profile" class="settings-nav-link active">👤 Profile</a>
+                    <a href="#section-security" class="settings-nav-link">🔐 Security</a>
+                    <a href="#section-appearance" class="settings-nav-link">🎨 Appearance</a>
+                    <a href="#section-budget" class="settings-nav-link">💰 Budget</a>
+                    <a href="#section-currency" class="settings-nav-link">💱 Currency</a>
+                    <a href="#section-notifications" class="settings-nav-link">🔔 Notifications</a>
+                    <a href="#section-data" class="settings-nav-link">📊 Data Management</a>
+                    <a href="#section-danger" class="settings-nav-link text-danger">⚠️ Danger Zone</a>
+                </nav>
+                <div class="settings-sidebar-footer">
+                    <button id="logout-btn" class="btn btn-danger-outline btn-full">🚪 Logout</button>
+                </div>
+            </aside>
+
+            <main class="settings-content">
+                <div class="settings-header">
+                    <h2>⚙️ Account Settings</h2>
+                    <p class="text-muted">Manage your ExpenseTrack account and preferences.</p>
+                </div>
+
+                <!-- Profile Section -->
+                <section id="section-profile" class="settings-section">
+                    <h3 class="section-title">👤 Profile</h3>
+                    <div class="card">
+                        <form id="profile-form">
+                            <div class="form-group">
+                                <label for="profile-name">Name</label>
+                                <input type="text" id="profile-name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-email">Email</label>
+                                <input type="email" id="profile-email" disabled>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Security Section -->
+                <section id="section-security" class="settings-section">
+                    <h3 class="section-title">🔐 Security</h3>
+                    <div class="card">
+                        <form id="password-form">
+                            <div class="form-group">
+                                <label for="current-password">Current Password</label>
+                                <div class="password-field-wrapper">
+                                    <input type="password" id="current-password" required>
+                                    <button type="button" class="password-toggle-btn" data-target="current-password" title="Show Password">👁️</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">New Password</label>
+                                <div class="password-field-wrapper">
+                                    <input type="password" id="new-password" minlength="6" required>
+                                    <button type="button" class="password-toggle-btn" data-target="new-password" title="Show Password">👁️</button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm Password</label>
+                                <div class="password-field-wrapper">
+                                    <input type="password" id="confirm-password" minlength="6" required>
+                                    <button type="button" class="password-toggle-btn" data-target="confirm-password" title="Show Password">👁️</button>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Change Password</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Appearance Section -->
+                <section id="section-appearance" class="settings-section">
+                    <h3 class="section-title">🎨 Appearance</h3>
+                    <div class="card">
+                        <div class="form-group">
+                            <label>Theme</label>
+                            <div class="theme-radio-group">
+                                <label class="radio-option">
+                                    <input type="radio" name="theme-radio" value="light">
+                                    <span>Light</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="theme-radio" value="dark">
+                                    <span>Dark</span>
+                                </label>
+                                <label class="radio-option">
+                                    <input type="radio" name="theme-radio" value="system">
+                                    <span>System</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Budget Section -->
+                <section id="section-budget" class="settings-section">
+                    <h3 class="section-title">💰 Monthly Budget</h3>
+                    <div class="card">
+                        <form id="budget-form">
+                            <div class="form-group">
+                                <label>Current Budget</label>
+                                <div id="current-budget-display-val" class="current-budget-text">₹0</div>
+                            </div>
+                            <div class="form-group">
+                                <label for="settings-budget-input">New Budget Amount</label>
+                                <input type="number" id="settings-budget-input" min="0" step="100" placeholder="e.g. 10000">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Budget</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Currency Section -->
+                <section id="section-currency" class="settings-section">
+                    <h3 class="section-title">💱 Currency</h3>
+                    <div class="card">
+                        <form id="currency-form">
+                            <div class="form-group">
+                                <label for="currency-select">Select Currency</label>
+                                <select id="currency-select">
+                                    <option value="INR">₹ INR – Indian Rupee</option>
+                                    <option value="USD">$ USD – US Dollar</option>
+                                    <option value="EUR">€ EUR – Euro</option>
+                                    <option value="GBP">£ GBP – British Pound</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Notifications Section -->
+                <section id="section-notifications" class="settings-section">
+                    <h3 class="section-title">🔔 Notifications</h3>
+                    <div class="card">
+                        <form id="notifications-form">
+                            <div class="toggle-row">
+                                <div>
+                                    <label class="toggle-label">Expense reminders</label>
+                                    <p class="toggle-desc">Get reminded to log daily expenses.</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="notif-expense">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-row">
+                                <div>
+                                    <label class="toggle-label">Budget warnings</label>
+                                    <p class="toggle-desc">Alert when exceeding 80% of budget.</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="notif-budget">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="toggle-row">
+                                <div>
+                                    <label class="toggle-label">Monthly summary</label>
+                                    <p class="toggle-desc">Receive a summary at the end of the month.</p>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="notif-summary">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Data Management Section -->
+                <section id="section-data" class="settings-section">
+                    <h3 class="section-title">📊 Data Management</h3>
+                    <div class="card">
+                        <div class="data-actions-grid">
+                            <button id="export-my-data-btn" class="btn btn-outline">📥 Export My Data</button>
+                            <button id="export-excel-btn" class="btn btn-outline" style="border-color: var(--success); color: var(--success);">📊 Export Excel</button>
+                            <button id="export-csv-btn" class="btn btn-outline">📄 Export CSV</button>
+                            <button id="delete-all-expenses-btn" class="btn btn-danger-outline">🗑️ Delete All Expenses</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Danger Zone Section -->
+                <section id="section-danger" class="settings-section">
+                    <h3 class="section-title text-danger">⚠️ Danger Zone</h3>
+                    <div class="card border-danger">
+                        <p class="text-danger mb-3"><strong>Delete My Account</strong></p>
+                        <p class="mb-3 text-muted">This will permanently delete your account, expenses, budget, and settings. This action cannot be undone.</p>
+                        <button id="delete-account-btn" class="btn btn-primary" style="background-color: var(--danger); border-color: var(--danger);">Delete My Account</button>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/settings.js"></script>
+</body>
+</html>

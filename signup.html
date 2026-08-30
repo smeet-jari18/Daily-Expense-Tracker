@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - ExpenseTrack</title>
+    <meta name="description" content="Create your ExpenseTrack account to manage daily expenses.">
+    <!-- Favicon (SVG = crisp at any size, PNG fallback) -->
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <!-- Header -->
+            <div class="auth-header">
+                <div class="auth-brand">
+                    <div class="auth-logo">₹</div>
+                    <h1 class="auth-title">ExpenseTrack</h1>
+                </div>
+                <p class="auth-subtitle">Create Your ExpenseTrack Account</p>
+            </div>
+
+            <!-- Notification Alert -->
+            <div id="alert-msg" class="alert alert-danger hidden"></div>
+
+            <!-- Registration Form -->
+            <form id="signup-form" novalidate>
+                <div class="form-group">
+                    <label for="fullname">Full Name <span class="required">*</span></label>
+                    <input type="text" id="fullname" placeholder="e.g. Smeet Jariwala" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" placeholder="e.g. user@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password (min 6 chars) <span class="required">*</span></label>
+                    <div class="password-field-wrapper">
+                        <input type="password" id="password" placeholder="Create password" required>
+                        <button type="button" class="password-toggle-btn" data-target="password" title="Show Password">👁️</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password <span class="required">*</span></label>
+                    <div class="password-field-wrapper">
+                        <input type="password" id="confirm-password" placeholder="Re-enter password" required>
+                        <button type="button" class="password-toggle-btn" data-target="confirm-password" title="Show Password">👁️</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full mt-3">Create Account</button>
+            </form>
+
+            <!-- Footer Navigation Link -->
+            <div class="auth-footer-text mt-3">
+                Already have an account? <a href="login.html" class="auth-link">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/supabase-config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/signup.js"></script>
+</body>
+</html>

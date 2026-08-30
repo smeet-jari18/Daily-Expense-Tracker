@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#6366f1"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="64" height="64" rx="14" fill="url(#g)"/>
+  <path d="M41.69 21.00 40.39 25.41H16.31L17.59 21.00ZM30.29 50.0 16.80 33.47 16.69 30.26H23.43Q26.03 30.26 27.85 29.51Q29.68 28.76 30.64 27.25Q31.61 25.75 31.61 23.50Q31.61 20.16 29.61 18.26Q27.61 16.36 23.43 16.36H16.31L17.61 12.0H23.43Q27.97 12.0 30.89 13.49Q33.81 14.98 35.22 17.57Q36.64 20.16 36.64 23.45Q36.64 26.46 35.36 28.96Q34.09 31.46 31.31 32.95Q28.53 34.44 23.99 34.44H23.86L36.28 49.69V50.0ZM41.69 12.0 40.39 16.41 21.36 16.26 22.64 12.0Z" fill="#ffffff" stroke="#ffffff" stroke-width="2.2" stroke-linejoin="round"/>
+  <g stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.85">
+    <path d="M 37.5,53.5 L 44.5,48 L 48.5,51 L 55.5,44.5"/>
+    <path d="M 55.5,44.5 L 50.5,45.8"/>
+    <path d="M 55.5,44.5 L 54,50"/>
+  </g>
+</svg>
