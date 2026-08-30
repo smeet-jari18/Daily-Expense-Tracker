@@ -34,8 +34,11 @@ function rowToExpense(r) {
 }
 
 function expenseToRow(e) {
+    // NOTE: we do NOT send "id" — the client uses temporary ids like
+    // "exp_<uuid>" which are not valid UUIDs, and Postgres rejects them
+    // (column expenses.id is uuid type). Postgres generates the real
+    // UUID (gen_random_uuid()); insert(...).select() returns it.
     return {
-        id: e.id,
         user_id: e.userId,
         amount: Number(e.amount),
         category: e.category,
