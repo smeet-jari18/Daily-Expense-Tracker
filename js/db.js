@@ -217,8 +217,11 @@ async function dbUpdateProfileName(userId, name) {
     const { error: metaErr } = await sb.auth.updateUser({ data: { name } });
     if (metaErr) console.warn('Could not update profile metadata:', metaErr.message);
 
-    // 2) Keep the profiles table in sync
-    const { error } = await sb.from('profiles').upsert({ id: userId, name });
+    // 2) Keep the profiles table in sync.
+    // NOTE: use .update() NOT .upsert() — the profiles table has no INSERT
+    // policy (rows are created by the signup trigger), so an upsert's INSERT
+    // path is rejected by Row Level Security even when the row already exists.
+    const { error } = await sb.from('profiles').update({ name }).eq('id', userId);
     if (error) {
         console.error('Error updating profile:', error);
         return false;

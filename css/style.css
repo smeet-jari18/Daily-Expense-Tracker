@@ -689,6 +689,10 @@ select:focus {
     display: flex;
     flex-direction: column;
     gap: 24px;
+    /* Grid items default to min-width:auto, which on narrow screens makes the
+       column wider than its 1fr track (content min-width wins) → horizontal
+       scroll. min-width:0 lets the column shrink to fit the viewport. */
+    min-width: 0;
 }
 
 .required { color: var(--danger); }
@@ -778,7 +782,7 @@ select:focus {
 }
 
 .list-header { margin-bottom: 0; }
-.list-actions { display: flex; gap: 8px; }
+.list-actions { display: flex; gap: 8px; flex-wrap: wrap; }
 
 .table-wrapper {
     overflow-x: auto;
