@@ -1,6 +1,5 @@
 # ── Secrets: KABHI commit mat karo ─────────────────────────────────
 .env
-.env.example
 .env.local
 .env.*.local
 
